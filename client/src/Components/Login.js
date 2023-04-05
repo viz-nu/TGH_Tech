@@ -22,7 +22,6 @@ const Login = () => {
         }
         try {
             const { data } = await axios.post("/api/user/login", { email: email, password: password });
-            // console.log(data);
             toast({ title: "Login Successful", status: "success", duration: 3000, isClosable: true, position: "bottom" });
             localStorage.setItem("user-Token", data.token);
             setPicLoading(false);
@@ -71,12 +70,3 @@ const Login = () => {
 }
 
 export default Login
-// email
-// :
-// "vishnu@gmail.com"
-// name
-// :
-// "viznu"
-// password
-// :
-// "Appam123$"

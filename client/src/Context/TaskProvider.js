@@ -3,11 +3,11 @@ const TaskContext = createContext();
 const TaskProvider = ({ children }) => {
     const [user, setUser] = useState()
 
-    const [tasks, setTasks] = useState([])
+    const [allTasks, setAllTasks] = useState([])
 
 
     return (
-        <TaskContext.Provider value={{ user, setUser, tasks, setTasks }}>
+        <TaskContext.Provider value={{ user, setUser, allTasks, setAllTasks }}>
             {children}
         </TaskContext.Provider>
     )

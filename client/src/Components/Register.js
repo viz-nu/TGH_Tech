@@ -31,7 +31,6 @@ const Register = () => {
         }
 
         try {
-
             const { data } = await axios.post("/api/user/register", { name: name, email: email, password: password });
             toast({ title: "Registration Successful", status: "success", duration: 3000, isClosable: true, position: "bottom" });
             localStorage.setItem("user-Token", data.token);
@@ -52,7 +51,6 @@ const Register = () => {
 
 
     return (
-
         <VStack spacing="5px">
             <FormControl isRequired>
                 <FormLabel>Full Name</FormLabel>
@@ -86,7 +84,6 @@ const Register = () => {
             </FormControl>
             <Button colorScheme="blue" width="100%" style={{ marginTop: 15 }} onClick={submitHandler} isLoading={picLoading}> Sign Up</Button>
         </VStack>
-
     )
 }
 

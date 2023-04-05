@@ -9,39 +9,14 @@ const { JWT } = config.get("SECRET_KEYS")
 
 const taskRouter = express.Router()
 
-// ADD /add
-// req.body : {
-//     taskname: 'test',
-//         priority: 9,
-//             isCompleted: false,
-//                 isCancelled: false
-// }
-// user ={
-//     _id: new ObjectId("642d41823c70f850fe00a547"),
-//         name: 'Guest',
-//             email: 'guest@example.com',
-//                 password: '$2b$12$MMDvWUpd6fn/qr7.wAGWW.ukH/vRYE3zFeqhOfm/0Qgd9YGnKy4cu',
-//                     tasks: [],
-//                         createdAt: 2023 - 04 - 05T09: 38: 10.746Z,
-//                             updatedAt: 2023 - 04 - 05T09: 38: 10.746Z,
-//                                 __v: 0
-// }
-// req.user : {
-//     _id: '642d41823c70f850fe00a547',
-//         name: 'Guest',
-//             email: 'guest@example.com',
-//                 iat: 1680697242,
-//                     exp: 1680700842
-// }
-
+//Add api
 
 taskRouter.post('/add', authMiddleware, async (req, res) => {
     try {
-        const user = await userModel.findOne({email:req.user.email})
+        const user = await userModel.findOne({ email: req.user.email })
         user.tasks.push(req.body)
         await user.save()
-        console.log(user);
-        res.status(200).json({message:"task added successfully"});
+        res.status(200).json({ message: "task added successfully" });
     } catch (error) {
         res.status(500);
         console.log("error while adding task");
@@ -50,39 +25,52 @@ taskRouter.post('/add', authMiddleware, async (req, res) => {
     }
 });
 
-//
+//cancel api
 
-
-
-taskRouter.post('/cancel', async (req, res) => {
+taskRouter.post('/cancel', authMiddleware, async (req, res) => {
     try {
-
-
+        const user = await userModel.findOne({ email: req.user.email })
+        user.tasks = user.tasks.map(ele => {
+            if (ele._id == req.body.id)  ele.isCancelled = !ele.isCancelled
+            return ele
+        })
+        await user.save()
+        res.status(200).json({ message: "task status changed" })
     } catch (error) {
         res.status(500);
         console.log("error while cancelling task");
         console.log(error);
-        throw new Error("User failed to login  due to internal Server error")
     }
 });
-taskRouter.post('/completed', async (req, res) => {
+//completed api
+taskRouter.post('/completed', authMiddleware, async (req, res) => {
     try {
-
+        const user = await userModel.findOne({ email: req.user.email })
+        user.tasks=user.tasks.map(ele=>{
+            if(ele._id==req.body.id){
+                ele.isCompleted = !ele.isCompleted
+            }
+            return ele
+        })
+        await user.save()
+        res.status(200).json({ message: "task status changed" })
     } catch (error) {
         res.status(500);
         console.log("error while marking completed task");
         console.log(error);
-        throw new Error("User failed to login  due to internal Server error")
     }
 });
-taskRouter.post('/delete', async (req, res) => {
+//delete api
+taskRouter.post('/delete', authMiddleware, async (req, res) => {
     try {
-
+        const user = await userModel.findOne({ email: req.user.email })
+        user.tasks = user.tasks.filter((ele) => ele._id != req.body.id)
+        await user.save()
+        res.status(200).json({ message: "task Deleted" })
     } catch (error) {
         res.status(500);
         console.log("error while removing task");
         console.log(error);
-        throw new Error("User failed to login  due to internal Server error")
     }
 });
 

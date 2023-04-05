@@ -11,16 +11,16 @@ import userModel from "../../models/userModel.js"
 const { JWT } = config.get("SECRET_KEYS")
 
 const userRouter = express.Router()
+// sending all user details to dashboard
+userRouter.get('/auth', authMiddleware, async (req, res) => {
+    try {
+        let user = await userModel.findOne({ email: req.user.email });
+        res.status(200).json(user)
+    } catch (error) {
+        console.log(error);
+    }
 
-// userRouter.post('/auth', authMiddleware, async (req, res) => {
-//     try {
-//         let user = await userModel.findOne({ email: req.user.email });
-//         res.status(200).json(user)
-//     } catch (error) {
-//         console.log(error);
-//     }
-
-// });
+});
 
 // Register
 // { name: 'Viz', email: 'vishnuteg@gmail.com', password: 'Vishnu1808#' }
