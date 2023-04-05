@@ -1,7 +1,0 @@
-{
-    "Port": 2323,
-    "MongoURL": "mongodb+srv://viz:viz1@cluster0.05ocl42.mongodb.net/TGH",
-    "SECRET_KEYS": {
-        "JWT": "Vizjwt"
-    }
-}
